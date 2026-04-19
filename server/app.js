@@ -3,13 +3,13 @@ import { google } from "googleapis";
 import dotenv from "dotenv";
 import cors from "cors";
 // import fs from "fs";
-import authRouter from "./routes/auth.js";
-import usersRouter from "./routes/users-route.js";
-import dashboardRoute from "./routes/dashboard-route.js";
+import authRouter from "./routes/auth.route.js";
+import usersRouter from "./routes/users.route.js";
+import dashboardRoute from "./routes/dashboard.route.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
-import { handleLlm } from "./util/model.js";
+import { handleLlm } from "./utils/model.js";
 dotenv.config();
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 app.get("/healthz", (req, res) => {

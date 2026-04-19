@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from "date-fns";
-import { prisma } from "./db.js";
+import { prisma } from "../config/db.js";
 import { sendMail } from "./mailer.js";
-import { createCalendarEvent } from "../controller/dashboard-controller.js";
+import { createCalendarEvent } from "../controller/dashboard.controller.js";
 import moment from "moment";
 
 export async function addLeaveRequestEvent(
@@ -10,7 +10,7 @@ export async function addLeaveRequestEvent(
   endDate,
   reason,
   id,
-  newRequest
+  newRequest,
 ) {
   newRequest = await prisma.leaveRequest.create({
     data: {
@@ -48,20 +48,20 @@ export async function addLeaveRequestEvent(
   <p><strong>Dates:</strong>  ${moment(startDate)
     .subtract(0, "day")
     .format("DD/MM/YYYY")} →  ${moment(endDate)
-        .subtract(0, "day")
-        .format("DD/MM/YYYY")}</p>
+    .subtract(0, "day")
+    .format("DD/MM/YYYY")}</p>
   <p><strong>Reason:</strong> ${reason}</p>
   <p>
     <a href="${process.env.APP_URL}/dashboard/approve-reject?id=${
-        newRequest.id
-      }&status=APPROVED&managerUserId=${
-        g.manager.id
-      }" style="background:#4caf50;color:white;padding:8px 16px;text-decoration:none;border-radius:4px">Approve</a>
+      newRequest.id
+    }&status=APPROVED&managerUserId=${
+      g.manager.id
+    }" style="background:#4caf50;color:white;padding:8px 16px;text-decoration:none;border-radius:4px">Approve</a>
     <a href="${process.env.APP_URL}/dashboard/approve-reject?id=${
-        newRequest.id
-      }&status=REJECTED&managerUserId=${
-        g.manager.id
-      }"  style="background:#f44336;color:white;padding:8px 16px;text-decoration:none;border-radius:4px">Reject</a>
+      newRequest.id
+    }&status=REJECTED&managerUserId=${
+      g.manager.id
+    }"  style="background:#f44336;color:white;padding:8px 16px;text-decoration:none;border-radius:4px">Reject</a>
   </p>`;
       sendMail({
         from: newRequest.user.approvedLeaveRequests,
@@ -69,7 +69,7 @@ export async function addLeaveRequestEvent(
         subject: `Leave request from ${newRequest.user.fullName}`,
         html: htmlManagers,
       });
-    })
+    }),
   );
 
   // acknowledgement to the user
@@ -89,7 +89,7 @@ export async function createEvents(
   approved,
   description,
   id,
-  managerUserId
+  managerUserId,
 ) {
   // DB transaction
   await prisma.$transaction(async (tx) => {
@@ -114,7 +114,7 @@ export async function createEvents(
 
     const days = differenceInCalendarDays(
       new Date(request.endDate),
-      new Date(request.startDate)
+      new Date(request.startDate),
     );
 
     await tx.userLeaveType.update({
@@ -203,7 +203,7 @@ export async function rejectLeaveRequestEvent(
   reqRow,
   id,
   managerUserId,
-  approvedData
+  approvedData,
 ) {
   reqRow = await prisma.leaveRequest.findUnique({
     where: { id },
@@ -225,7 +225,7 @@ export async function rejectLeaveRequestEvent(
 
   const days = differenceInCalendarDays(
     new Date(reqRow.endDate),
-    new Date(reqRow.startDate)
+    new Date(reqRow.startDate),
   );
 
   // Update DB in transaction
@@ -320,7 +320,7 @@ export async function cancelLeaveRequestEvent(id, leaveRequestId) {
 
   const days = differenceInCalendarDays(
     new Date(reqRow.endDate),
-    new Date(reqRow.startDate)
+    new Date(reqRow.startDate),
   );
 
   // Update DB in transaction

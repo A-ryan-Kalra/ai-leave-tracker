@@ -2,8 +2,8 @@ import { tool } from "@langchain/core/tools";
 import z from "zod";
 import { calendar } from "../app.js";
 
-import { prisma } from "./db.js";
-import { createCalendarEvent } from "../controller/dashboard-controller.js";
+import { prisma } from "../config/db.js";
+import { createCalendarEvent } from "../controller/dashboard.controller.js";
 import { differenceInCalendarDays, parseJSON } from "date-fns";
 import moment from "moment";
 
@@ -83,12 +83,12 @@ export const findAndDeleteEventTool = tool(
       q: z
         .string()
         .describe(
-          "The query to be used to get leave request of a user. It can be one of these values: createdAt,summary, description, location, attendees display name, attendees email, organiser's email, organiser's name."
+          "The query to be used to get leave request of a user. It can be one of these values: createdAt,summary, description, location, attendees display name, attendees email, organiser's email, organiser's name.",
         ),
 
       userId: z.string().describe("User Id"),
     }),
-  }
+  },
 );
 
 export const createEventTool = tool(
@@ -176,18 +176,18 @@ export const createEventTool = tool(
       });
 
       const startTime = moment(
-        new Date(data.start.dateTime).toISOString().slice(0, 10)
+        new Date(data.start.dateTime).toISOString().slice(0, 10),
       ).format("Do MMM YYYY");
       const endTime = moment(
-        new Date(data.end.dateTime).toISOString().slice(0, 10)
+        new Date(data.end.dateTime).toISOString().slice(0, 10),
       ).format("Do MMM YYYY");
       const newEvent = `Your leave request has been marked successfully\n
 - The event "${
         data.summary
       }" is confirmed and will take place from ${startTime} through ${endTime} and It was created on ${moment(
-        new Date(data.created).toISOString().slice(0, 10)
+        new Date(data.created).toISOString().slice(0, 10),
       ).format(
-        "Do MMM YYYY"
+        "Do MMM YYYY",
       )}.\n\nYou can view it directly in your calendar using the event-specific link:\n<a class="show-link" href="${
         data.htmlLink
       }" target="_blank">Show Calender</a>
@@ -217,7 +217,7 @@ export const createEventTool = tool(
         timeZone: z.string().describe("Current IANA timezone string"),
       }),
     }),
-  }
+  },
 );
 
 export const getEventTool = tool(
@@ -234,23 +234,23 @@ export const getEventTool = tool(
       let prompt = response.data.items.map(
         (e, index) => {
           const startTime = moment(
-            new Date(e.start.dateTime).toISOString().slice(0, 10)
+            new Date(e.start.dateTime).toISOString().slice(0, 10),
           ).format("Do MMM YYYY");
           const endTime = moment(
-            new Date(e.end.dateTime).toISOString().slice(0, 10)
+            new Date(e.end.dateTime).toISOString().slice(0, 10),
           ).format("Do MMM YYYY");
           return `
 ${index + 1}. The event "${
             e.summary
           }" is confirmed and will take place from ${startTime} through ${endTime} and It was created on ${moment(
-            new Date(e.created).toISOString().slice(0, 10)
+            new Date(e.created).toISOString().slice(0, 10),
           ).format(
-            "Do MMM YYYY"
+            "Do MMM YYYY",
           )}.\n\nYou can view it directly in your calendar using the event-specific link:\n<a class="show-link" href="${
             e.htmlLink
           }" target="_blank">Show Calender</a>
           `;
-        }
+        },
         //     `Event: ${e.summary}
         // Start : ${e.start.date}
         // End   : ${e.end.date}
@@ -277,7 +277,7 @@ ${index + 1}. The event "${
       q: z
         .string()
         .describe(
-          "The query to be used to get events from google calender. It can be one of these values: summary, description, location, attendees display name, attendees email, organiser's email, organiser's name."
+          "The query to be used to get events from google calender. It can be one of these values: summary, description, location, attendees display name, attendees email, organiser's email, organiser's name.",
         ),
       timeMin: z
         .string()
@@ -287,7 +287,7 @@ ${index + 1}. The event "${
         .describe("The Max datetime is in UTC format for the event"),
       timeZone: z.string().describe("Current IANA timezone string."),
     }),
-  }
+  },
 );
 
 export const getUserLeaveTool = tool(
@@ -310,7 +310,7 @@ export const getUserLeaveTool = tool(
         (leave, index) =>
           `${index + 1}. Type: ${leave.leaveType.name}\t Balance: ${
             leave.leaveBalance
-          }\n`
+          }\n`,
       );
       allLeaveType.unshift("Your Leaves:\n");
 
@@ -328,5 +328,5 @@ export const getUserLeaveTool = tool(
     schema: z.object({
       userId: z.string().describe("User Id"),
     }),
-  }
+  },
 );

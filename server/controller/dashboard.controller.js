@@ -1,8 +1,8 @@
 import { calendar } from "../app.js";
-import { prisma } from "../util/db.js";
-import errorHandler from "../util/error-handler.js";
+import { prisma } from "../config/db.js";
+import errorHandler from "../middleware/error.middleware.js";
 import { differenceInCalendarDays } from "date-fns";
-import { sendMail } from "../util/mailer.js";
+import { sendMail } from "../utils/mailer.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";
 import {
@@ -10,7 +10,7 @@ import {
   cancelLeaveRequestEvent,
   createEvents,
   rejectLeaveRequestEvent,
-} from "../util/events.js";
+} from "../utils/events.js";
 export const listUserLeaveType = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -62,7 +62,7 @@ export const addLeaveRequest = async (req, res, next) => {
       endDate,
       reason,
       id,
-      newRequest
+      newRequest,
     );
 
     return res.status(201).json({
@@ -281,7 +281,7 @@ export const fetchUser = async (req, res, next) => {
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_TIMEOUT || "7d",
-      }
+      },
     );
     req.headers.authorization = `Bearer ${token}`;
 

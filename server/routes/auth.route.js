@@ -1,6 +1,6 @@
 import express from "express";
-import { googleLogin, shareCalendar } from "../controller/auth-controller.js";
-import { verifyToken, requireRole } from "../util/auth-middleware.js";
+import { googleLogin, shareCalendar } from "../controller/auth.controller.js";
+import { verifyToken, requireRole } from "../middleware/auth.middleware.js";
 import jwt from "jsonwebtoken";
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.post("/refresh", (req, res) => {
           createdAt,
         },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_TIMEOUT_REFRESH || "7d" }
+        { expiresIn: process.env.JWT_TIMEOUT_REFRESH || "7d" },
       );
       // For - cookies
       // res
@@ -46,7 +46,7 @@ router.post("/refresh", (req, res) => {
         token,
         message: "Success",
       });
-    }
+    },
   );
 });
 

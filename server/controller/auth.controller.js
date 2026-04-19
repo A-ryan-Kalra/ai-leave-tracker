@@ -1,8 +1,8 @@
-import oauth2Client from "../util/google-config.js";
+import oauth2Client from "../config/google.js/index.js";
 import axios from "axios";
-import { prisma } from "../util/db.js";
+import { prisma } from "../config/db.js";
 import jwt from "jsonwebtoken";
-import errorHandler from "../util/error-handler.js";
+import errorHandler from "../middleware/error.middleware.js";
 import { calendar } from "../app.js";
 
 export const googleLogin = async (req, res, next) => {
@@ -16,7 +16,7 @@ export const googleLogin = async (req, res, next) => {
     oauth2Client.setCredentials(googleRes.tokens);
 
     const userRes = await axios.get(
-      `${process.env.GOOGLE_OAUTH_URL}${googleRes.tokens.access_token}`
+      `${process.env.GOOGLE_OAUTH_URL}${googleRes.tokens.access_token}`,
     );
     const { email, name, picture } = userRes.data;
     const refresh_token = googleRes.tokens?.refresh_token;

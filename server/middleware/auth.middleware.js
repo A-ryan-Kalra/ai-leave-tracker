@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { prisma } from "./db.js";
+import { prisma } from "../config/db.js";
 
 export const createToken = async (user) => {
   try {
@@ -10,7 +10,7 @@ export const createToken = async (user) => {
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_TIMEOUT || "7d",
-      }
+      },
     );
 
     return {
@@ -97,7 +97,7 @@ export const getUser = async (userId) => {
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_TIMEOUT || "7d",
-    }
+    },
   );
   req.headers.authorization = `Bearer ${token}`;
 };

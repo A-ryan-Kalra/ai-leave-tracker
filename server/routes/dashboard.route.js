@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken, requireRole } from "../util/auth-middleware.js";
+import { verifyToken, requireRole } from "../middleware/auth.middleware.js";
 import {
   addLeaveRequest,
   approveLeaveRequest,
@@ -11,7 +11,7 @@ import {
   listUserLeaveType,
   manageLeaveRequests,
   rejectLeaveRequest,
-} from "../controller/dashboard-controller.js";
+} from "../controller/dashboard.controller.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken, requireRole } from "../util/auth-middleware.js";
+import { verifyToken, requireRole } from "../middleware/auth.middleware.js";
 import {
   addLeaveType,
   addMemberToManager,
@@ -31,25 +31,25 @@ router.post(
   "/managers/:id/members",
   verifyToken,
 
-  addMemberToManager
+  addMemberToManager,
 );
 router.post(
   "/assign-manager/:id",
   verifyToken,
 
-  assignManagers
+  assignManagers,
 );
 router.get(
   "/manager/:id/list-users",
   verifyToken,
 
-  fetchUsers
+  fetchUsers,
 );
 router.post(
   "/create-project",
   verifyToken,
 
-  createProjects
+  createProjects,
 );
 router.patch("/delete-project/:id", verifyToken, deleteProject);
 router.post("/add-new-user", verifyToken, addNewUser);
@@ -58,80 +58,80 @@ router.get(
   "/list-all-project",
   verifyToken,
 
-  listALlProjects
+  listALlProjects,
 );
 router.get(
   "/list-project/:id",
   verifyToken,
 
-  listProject
+  listProject,
 );
 router.patch(
   "/update-group/:id",
   verifyToken,
 
-  updateGroup
+  updateGroup,
 );
 router.post(
   "/add-leave-type",
   verifyToken,
 
-  addLeaveType
+  addLeaveType,
 );
 
 router.get(
   "/list-leave-type",
   verifyToken,
 
-  listLeaveType
+  listLeaveType,
 );
 router.get(
   "/list-leave-type/:id",
   verifyToken,
 
-  fetchLeaveTypeById
+  fetchLeaveTypeById,
 );
 router.patch(
   "/update-leave-type/:id",
   verifyToken,
 
-  updateLeaveType
+  updateLeaveType,
 );
 router.patch(
   "/delete-leave-type/:id",
   verifyToken,
 
-  deleteLeaveType
+  deleteLeaveType,
 );
 router.get(
   "/get-user-detail/:id",
   verifyToken,
 
-  getUserDetail
+  getUserDetail,
 );
 router.post(
   "/add-user-leavetype/:id",
   verifyToken,
 
-  addUserLeaveType
+  addUserLeaveType,
 );
 router.patch(
   "/update-user-leavetype/:id",
   verifyToken,
 
-  updateUserLeaveType
+  updateUserLeaveType,
 );
 router.patch(
   "/delete-user-leavetype/:id",
   verifyToken,
 
-  deleteUserLeaveType
+  deleteUserLeaveType,
 );
 router.patch(
   "/assignRoles/:id",
   verifyToken,
 
-  assignRoles
+  assignRoles,
 );
 
 export default router;
