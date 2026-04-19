@@ -1,3 +1,10 @@
+<br />
+
+> [!IMPORTANT]
+> The Website is hosted on Render’s free tier, so it might take a few seconds to load and display the website - but hey, good things take time! 😄
+
+<br />
+
 # 📅 AI Leave Tracker
 
 A smart and seamless AI leave management system designed for modern workplaces using modern AI. <br/>
@@ -6,7 +13,6 @@ No spreadsheets, no hassle, just smooth leave management that keeps work and lif
 
 
 <br />
-
 <img width="1440" height="782" alt="leave-tracker" src="https://github.com/user-attachments/assets/41d2b1ca-afde-4381-b027-93c38d4a6d0a" />
 
 ---
